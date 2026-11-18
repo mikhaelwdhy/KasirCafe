@@ -1,8 +1,16 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package View;
+
+import controller.AuthController;
+import model.User;
+import model.Admin;
+import javax.swing.JOptionPane;
+
+    private static class logger {
+
+        public logger() {
+        }
+    }
 
 public class LoginView extends javax.swing.JFrame {
     
@@ -26,8 +34,8 @@ public class LoginView extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        txtUsername = new javax.swing.JTextField();
+        txtPassword = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         button1 = new java.awt.Button();
 
@@ -37,13 +45,11 @@ public class LoginView extends javax.swing.JFrame {
 
         jLabel2.setText("Password ");
 
-        jTextField1.setForeground(new java.awt.Color(255, 255, 255));
-        jTextField1.setText("jTextField1");
-        jTextField1.addActionListener(this::jTextField1ActionPerformed);
+        txtUsername.setForeground(new java.awt.Color(255, 255, 255));
+        txtUsername.addActionListener(this::txtUsernameActionPerformed);
 
-        jTextField2.setForeground(new java.awt.Color(255, 255, 255));
-        jTextField2.setText("jTextField1");
-        jTextField2.addActionListener(this::jTextField2ActionPerformed);
+        txtPassword.setForeground(new java.awt.Color(255, 255, 255));
+        txtPassword.addActionListener(this::txtPasswordActionPerformed);
 
         jLabel3.setText("Masukan username dan password anda: ");
 
@@ -61,13 +67,13 @@ public class LoginView extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(52, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -82,10 +88,10 @@ public class LoginView extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
                 .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -97,16 +103,78 @@ public class LoginView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    private void txtUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsernameActionPerformed
+        // membuat objek controler
+     AuthController ac = new AuthController();
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+try {
+    User user = ac.login(
+        this.txtUsername.getText(),
+        this.txtPassword.getText()
+    );
+
+    if (user != null) {
+        JOptionPane.showMessageDialog(this, "Login berhasil");
+
+        if (user instanceof Admin) {
+            AdminDashboardView dsh = new AdminDashboardView();
+            dsh.setVisible(true);
+        } else {
+            KasirDashboardView dsh = new KasirDashboardView();
+            dsh.setVisible(true);
+        }
+
+        this.setVisible(false);
+
+    } else {
+        JOptionPane.showMessageDialog(this, "Login gagal");
+    }
+
+} catch (java.sql.SQLException e) {
+    JOptionPane.showMessageDialog(this, "Terjadi kesalahan: " + e.getMessage());
+}             
+    }//GEN-LAST:event_txtUsernameActionPerformed
+
+    private void txtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_txtPasswordActionPerformed
 
     private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
-        // TODO add your handling code here:
+        private void button1ActionPerformed(java.awt.event.ActionEvent evt) {
+    AuthController ac = new AuthController();
+
+    try {
+        User user = ac.login(
+            txtUsername.getText(),
+            txtPassword.getText()
+        );
+
+        if (user != null) {
+            JOptionPane.showMessageDialog(this, "Login berhasil");
+
+            if (user instanceof Admin) {
+                AdminDashboardView dsh = new AdminDashboardView();
+                dsh.setVisible(true);
+            } else {
+                KasirDashboardView dsh = new KasirDashboardView();
+                dsh.setVisible(true);
+            }
+
+            this.setVisible(false);
+        } else {
+            JOptionPane.showMessageDialog(this, "Login gagal");
+        }
+
+    } catch (java.sql.SQLException e) {
+        JOptionPane.showMessageDialog(this, "Terjadi kesalahan: " + e.getMessage());
+    }
+}
+
+        private class txtUsername {
+
+            public txtUsername() {
+            }
+        }
     }//GEN-LAST:event_button1ActionPerformed
 
     /**
@@ -119,18 +187,19 @@ public class LoginView extends javax.swing.JFrame {
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    for (javax.swing.UIManager.LookAndFeelInfo info :
+            javax.swing.UIManager.getInstalledLookAndFeels()) {
 
-        /* Create and display the form
+        if ("Nimbus".equals(info.getName())) {
+            javax.swing.UIManager.setLookAndFeel(info.getClassName());
+            break;
+        }
+    }
+} catch (Exception ex) {
+    logger.log(java.util.logging.Level.SEVERE, null, ex);
+}        //</editor-fold>
+
+        /* Create and display the form*/
         java.awt.EventQueue.invokeLater(() -> new LoginView().setVisible(true));
     }
 
@@ -139,7 +208,7 @@ public class LoginView extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField txtPassword;
+    private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
 
